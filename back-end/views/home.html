@@ -1,0 +1,62 @@
+{{>partials/header}}
+<div class="row" >
+    <div class="col">
+        <div class="row">
+            <form action="/addbar" method="POST">
+                <div class="form-group">
+                    <label for="barcodeInput">barcode</label>
+                    <input type="text" class="form-control" name="barcode" id="barcodeInput" autofocus>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia enim sed, deleniti corporis cupiditate molestias a earum magnam? Nam unde ipsa aperiam optio id beatae qui magni odio, mollitia quod!</p>
+        </div>
+    </div>
+    <div class="col">
+        <!-- <div style="height:75%;line-height:3em;overflow:auto;" id="messages"> -->
+        <table class="table" id="receipt">
+            <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">item</th>
+                    <th scope="col">quantity</th>
+                    <th scope="col">price</th>
+                    <th scope="col">remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#items}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{item}}</td>
+                    <td>{{quantity}}</td>
+                    <td>{{price}}</td>
+                    <td><a href="/removebar{{id}}">{{id}}</a></td>
+                </tr>
+                {{/items}}
+            </tbody>
+        </table>
+
+        <div class="input-group mb-3" style="width: 10rem;">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="addon-wrapping">Total</span>
+            </div>
+            <input type="text" id="total" class="form-control" readonly>
+        </div>
+    </div>
+</div>
+<script>
+    var table = document.getElementById("receipt")
+    var totalVal = document.getElementById("total");
+    var total = 0
+    for(var i=1;i<table.rows.length;i++){
+        total += Number(table.rows[1].cells[3].innerHTML)
+    }
+    totalVal.value = total
+    // setTimeout(function(){ x.value = "2 seconds" }, 2000);
+    // setTimeout(function(){ x.value = "4 seconds" }, 4000);
+    // setTimeout(function(){ x.value = "6 seconds" }, 6000);
+</script>
+{{>partials/footer}}
+

@@ -1,0 +1,84 @@
+{{>partials/header}}
+    <div class="row">
+        <div class="col">
+            <h1>FindItem</h1>
+            <form action="/stocks/finditem" method="POST">
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                              <select class="custom-select" name="search">
+                                <option value="barcode" selected="selected">Barcode</option>
+                                <option value="prodname">ProdName</option>
+                              </select>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                        </div>
+                    </div>
+                </div>
+                <button input="sbumit" class="btn btn-primary">find</button>
+            </form>
+            <h1>InsertStock</h1>
+            <form name="inStock" action="/stocks/addstock" onsubmit="return checkStock()" method="POST">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="barcode">BarCode</label>
+                            <input type="text" class="form-control" id="barcode" name="barcode">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="quantity">Qnt</label>
+                            <input type="text" class="form-control" id="quantity" name="quantity">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="purDate">Purchase Date</label>
+                            <input type="date" class="form-control" id="purDate" name="purDate" value='{{currDate}}' >
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="expDate">Experation Date</label>
+                            <input type="date" class="form-control" id="expDate" name="expDate" value='{{nextMonth}}'>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="purPrice">Purchased Price</label>
+                            <input type="text" class="form-control" id="purPrice" name="purPrice">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="retPrice">Retale Price</label>
+                            <input type="text" class="form-control" id="retPrice" name="retPrice">
+                        </div>
+                    </div>
+                </div>
+                <button type="sbumit" class="btn btn-primary">Insert</button>
+            </form>
+        </div>
+        <div class="col">
+            <h1>List</h1>
+        </div>
+    </div>
+    <script>
+        function checkStock(){
+            var elem = document.forms["inStock"].elements
+
+            for(var i=0;i<elem.length-1;i++){
+                if(elem[i].value == ""){
+                    return false;
+                }
+            }
+            return true;
+        }
+    </script>
+{{>partials/footer}}

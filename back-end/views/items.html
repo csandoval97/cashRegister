@@ -1,0 +1,33 @@
+{{>partials/header}}
+    <div class="row">
+        <div class="col-md-12 col-lg-6">
+            <h1 class="text-muted">Find/Update product</h1>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minima facilis neque, iure cum voluptatibus veniam ea labore quo enim eius quaerat quos sit autem velit pariatur atque possimus. Veritatis, quam.</p>
+        </div>
+        <div class="col-md-12 col-lg-6">
+            <h1 class="text-muted">Add new product</h1>
+            <form action="/items/additem" method="POST">
+                <div class="row">
+                    <div class="col-sm-12 col-md-3 ">
+                        <p>image Lorem ipsum dolor sit amet consectetur, adipisicing  </p>
+                    </div>
+                    <div class="col-sm-12 col-md-9">
+                        <div class="form-group">
+                            <label for="barcode">BarCode</label>
+                            <input type="text" class="form-control" id="barcode" name="barcode">
+                        </div>
+                        <div class="form-group">
+                            <label for="barname">Product name</label>
+                            <input type="text" class="form-control" id="barname" name="barname">
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <input type="text" class="form-control" id="barname" name="category">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Item</button>
+            </form>
+        </div>
+    </div>
+{{>partials/footer}}
