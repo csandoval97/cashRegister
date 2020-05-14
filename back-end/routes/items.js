@@ -9,16 +9,38 @@ router.get('/', (req, res)=>{
     res.render('items',{})
 })
 
-router.post('/additem',(req,res)=>{
-    var {barcode,barname,category} = req.body
-    // console.log(req.body)
+router.post('/additem',async (req,res,next)=>{
+    var {barcode,barcodeRe,barname,category} = req.body
+    var err = null
+    if(barcode == '' || barname == '' || category == ''){
+        res.render('items',{err:'field is empty'})
+        return;
+    }
+    if(barcode != barcodeRe){
+        res.render('items',{err:'barcode do not match'})
+        return;
+    }
 
-    var item = new Item({barcode,barname,category})
-    item.save((err)=>{
-        // console.log(err)
+    var item = await Item.findOne({barcode},(err,itm)=>{
+        return itm
     })
+    .catch(err=>err="error with db")
+
+    if(err != null || item != null){
+        if(err != null){
+            res.render('items',{err:"errow with db"})
+        }
+        else{
+            res.render('items',{item,err:"item is already stored"})
+        }
+        return;
+    }
+
+    item =await new Item({barcode,barname,category}).save()
+    .catch(err=>err="problem with itemdb")
     
-    res.render('items',{})
+    res.render('items',{item,msg:"item was saved"})
+    return;
 })
 
 module.exports = router;

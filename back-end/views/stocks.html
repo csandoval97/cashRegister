@@ -12,7 +12,7 @@
                                 <option value="prodname">ProdName</option>
                               </select>
                             </div>
-                            <input type="text" class="form-control" aria-label="Text input with dropdown button">
+                            <input type="text" class="form-control" name="barcode" value='{{barcode}}'>
                         </div>
                     </div>
                 </div>
@@ -24,13 +24,27 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="barcode">BarCode</label>
-                            <input type="text" class="form-control" id="barcode" name="barcode">
+                            <input type="text" class="form-control" id="barcode" name="barcode" value='{{item.barcode}}' readonly>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="quantity">BarName</label>
+                            <input type="text" class="form-control" id="quantity" name="barname" value='{{item.barname}}' readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="barcode">BarCategory</label>
+                            <input type="text" class="form-control" id="barcode" name="category" value='{{item.category}}' readonly>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label for="quantity">Qnt</label>
-                            <input type="text" class="form-control" id="quantity" name="quantity">
+                            <input type="text" class="form-control" id="quantity" name="quantity" value={{item.quantity}}>
                         </div>
                     </div>
                 </div>
@@ -52,13 +66,13 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="purPrice">Purchased Price</label>
-                            <input type="text" class="form-control" id="purPrice" name="purPrice">
+                            <input type="text" class="form-control" id="purPrice" name="purPrice" value='{{item.purPrice}}'>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label for="retPrice">Retale Price</label>
-                            <input type="text" class="form-control" id="retPrice" name="retPrice">
+                            <input type="text" class="form-control" id="retPrice" name="retPrice" value='{{item.retPrice}}'>
                         </div>
                     </div>
                 </div>
@@ -67,6 +81,36 @@
         </div>
         <div class="col">
             <h1>List</h1>
+            <table class="table" id="receipt">
+                <thead>
+                    <tr>
+                        <th scope="col">barcode</th>
+                        <th scope="col">prod-name</th>
+                        <th scope="col">category</th>
+                        <th scope="col">quant</th>
+                        <th scope="col">purDate</th>
+                        <th scope="col">expDate</th>
+                        <th scope="col">purPrice</th>
+                        <th scope="col">retPrice</th>
+                        <th scope="col">add</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#itemList}}
+                    <tr>
+                        <td>{{barcode}}</td>
+                        <td>{{barname}}</td>
+                        <td>{{category}}</td>
+                        <td>{{quantity}}</td>
+                        <td><input type="date" value='{{purDate}}' readonly></td>
+                        <td><input type="date" value='{{expDate}}' readonly></td>
+                        <td>{{purPrice}}</td>
+                        <td>{{retPrice}}</td>
+                        <td><a href="/stocks/additem?bc={{barcode}}&cd={{creDate}}">add</a></td>
+                    </tr>
+                    {{/itemList}}
+                </tbody>
+            </table>
         </div>
     </div>
     <script>

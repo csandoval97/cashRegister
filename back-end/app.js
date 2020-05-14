@@ -8,7 +8,8 @@ var mongoose = require('mongoose')
 
 mongoose.connect('mongodb://localhost/test',{
   useNewUrlParser: true,
-  useUnifiedTopology:true
+  useUnifiedTopology:true,
+  useFindAndModify:false
 })
 .then(
   ()=> console.log("db ready to use"),
@@ -19,6 +20,8 @@ var indexRouter = require('./routes/index');
 var itemsRouter = require('./routes/items');
 var stocksRouter = require('./routes/stocks')
 var receiptsRouter = require('./routes/receipts')
+var storeRouter = require('./routes/store')
+
 
 var app = express();
 
@@ -39,6 +42,7 @@ app.use('/', indexRouter)
 app.use('/items', itemsRouter)
 app.use('/stocks',stocksRouter)
 app.use('/receipts',receiptsRouter)
+app.use('/store',storeRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
