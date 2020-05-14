@@ -28,6 +28,28 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Add Item</button>
             </form>
+
+            <h1>Item stored</h1>
+            <table class="table" id="receipt">
+                <thead>
+                    <tr>
+                        <th scope="col">barcode</th>
+                        <th scope="col">barname</th>
+                        <th scope="col">category</th>
+                        <th scope="col">creDate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#item}}
+                    <tr>
+                        <td>{{barcode}}</td>
+                        <td>{{barname}}</td>
+                        <td>{{category}}</td>
+                        <td>{{creDate}}</td>
+                    </tr>
+                    {{/item}}
+                </tbody>
+            </table>
         </div>
     </div>
 {{>partials/footer}}

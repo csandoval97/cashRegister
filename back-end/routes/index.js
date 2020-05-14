@@ -15,15 +15,35 @@ router.get('/', function(req, res, next) {
 
 router.post('/addbar',async (req,res,next)=>{
   // TODO: make sure repeated items are not added again
+  var err = null
 
-  var stockQuery = await Stocks.findOne({barcode:req.body.barcode},(err,stck)=>{
-    return stck
-  })
   var itemQuery = await Items.findOne({barcode:req.body.barcode},(err,itm)=>{
     return itm
   })
-  console.log(stockQuery)
-  console.log(itemQuery)
+  .catch(err => err = "error with itemdb")
+
+  if(err != null || itemQuery == null){
+    if(err!=null)
+      res.render('home', { title: 'Express',items,err:"error with itemdb"})
+    else
+      res.render('home', { title: 'Express',items,err:"item db error"})
+    return;
+  }
+
+  var stockQuery = await Stocks.findOne({barcode:req.body.barcode},(error,stck)=>{
+      return stck
+  })
+  .catch(err => err="error with stockdb" )
+
+  if(err != null || stockQuery == null){
+    if(err!=null)
+      res.render('home', { title: 'Express',items,err:"error with stockdb"})
+    else
+      res.render('home', { title: 'Express',items,err:"item does not exist im stock"})
+    return;
+  }
+  // // console.log(stockQuery)
+  // // console.log(itemQuery)
 
   var item = {id:counter, item:itemQuery.barname,quantity:1 ,price:stockQuery.retPrice}
   items.push(item)

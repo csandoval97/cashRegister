@@ -5,6 +5,8 @@ var stockSchema = new mongoose.Schema({
     quantity:Number,
     purDate:Date,
     expDate:Date,
+    creDate:Date,
+    creDate:Date,
     purPrice:Number,
     retPrice:Number
 })
