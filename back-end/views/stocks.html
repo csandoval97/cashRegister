@@ -24,13 +24,13 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="barcode">BarCode</label>
-                            <input type="text" class="form-control" id="barcode" name="barcode" value={{item.barcode}}>
+                            <input type="text" class="form-control" id="barcode" name="barcode" value='{{item.barcode}}' readonly>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label for="quantity">BarName</label>
-                            <input type="text" class="form-control" id="quantity" name="barname" value={{item.barname}}>
+                            <input type="text" class="form-control" id="quantity" name="barname" value='{{item.barname}}' readonly>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="barcode">BarCategory</label>
-                            <input type="text" class="form-control" id="barcode" name="category" value={{item.category}}>
+                            <input type="text" class="form-control" id="barcode" name="category" value='{{item.category}}' readonly>
                         </div>
                     </div>
                     <div class="col">
@@ -66,13 +66,13 @@
                     <div class="col">
                         <div class="form-group">
                             <label for="purPrice">Purchased Price</label>
-                            <input type="text" class="form-control" id="purPrice" name="purPrice">
+                            <input type="text" class="form-control" id="purPrice" name="purPrice" value='{{item.purPrice}}'>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label for="retPrice">Retale Price</label>
-                            <input type="text" class="form-control" id="retPrice" name="retPrice">
+                            <input type="text" class="form-control" id="retPrice" name="retPrice" value='{{item.retPrice}}'>
                         </div>
                     </div>
                 </div>
@@ -102,8 +102,8 @@
                         <td>{{barname}}</td>
                         <td>{{category}}</td>
                         <td>{{quantity}}</td>
-                        <td>{{purDate}}</td>
-                        <td>{{expDate}}</td>
+                        <td><input type="date" value='{{purDate}}' readonly></td>
+                        <td><input type="date" value='{{expDate}}' readonly></td>
                         <td>{{purPrice}}</td>
                         <td>{{retPrice}}</td>
                         <td><a href="/stocks/additem?bc={{barcode}}&cd={{creDate}}">add</a></td>

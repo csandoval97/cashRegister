@@ -6,7 +6,7 @@
         </div>
         <div class="col-md-12 col-lg-6">
             <h1 class="text-muted">Add new product</h1>
-            <form action="/items/additem" method="POST">
+            <form name="itemForm" action="/items/additem" onclick="return checkItem()" method="POST">
                 <div class="row">
                     <div class="col-sm-12 col-md-3 ">
                         <p>image Lorem ipsum dolor sit amet consectetur, adipisicing  </p>
@@ -16,6 +16,11 @@
                             <label for="barcode">BarCode</label>
                             <input type="text" class="form-control" id="barcode" name="barcode">
                         </div>
+                        <div class="form-group">
+                            <label for="barcode-re">Re-Enter Barcode</label>
+                            <input type="text" class="form-control" id="barcode-re" name="barcodeRe">
+                        </div>
+                        <p id="barcodeCheck"></p>
                         <div class="form-group">
                             <label for="barname">Product name</label>
                             <input type="text" class="form-control" id="barname" name="barname">
@@ -52,4 +57,32 @@
             </table>
         </div>
     </div>
+    <script>
+        console.log(document.getElementById('barcode').value )
+        function checkItem(){
+            var elem = document.forms["itemForm"].elements
+            var bar = document.getElementById('barcodeCheck')
+
+            if(elem.barcode.value =="" && elem.barcodeRe.value ==""){
+                return false;
+            }
+            else if(elem.barcode.value != elem.barcodeRe.value){
+                bar.textContent = "barcodes do not match"
+                bar.style = "color:red"
+                return false;
+            }
+            else{
+                bar.textContent = "barcodes match"
+                bar.style = "color:green"
+            }
+
+            for(var i=0;i<elem.length-1;i++){
+                if(elem[i].value == ''){
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    </script>
 {{>partials/footer}}

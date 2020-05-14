@@ -1,0 +1,44 @@
+{{>partials/header}}
+    <div class="row">
+        <div class="col-8">
+            <form action="/store/update" method="POST">
+                
+                <div class="form-group">
+                    <label for="street">StreetName</label>
+                    <input type="text" id="street" class="form-control" name="street" value="{{store.street}}">
+                </div>
+                <div class="form-group">
+                    <label for="store">StoreName</label>
+                    <input type="text" id="store" class="form-control" name="storeName" value="{{store.storeName}}">
+                </div>
+                <div class="form-group">
+                    <label for="manager">Manager</label>
+                    <input type="text" id="manager" class="form-control" name="manager" value="{{store.manager}}">
+                </div>
+                <div class="form-group">
+                    <label for="phone">PhoneNumber</label>
+                    <input type="text" id="phone" class="form-control" name="phone" value="{{store.phone}}">
+                </div>
+                <div class="form-group">
+                    <label for="state">StateTax</label>
+                    <input type="text" id="state" class="form-control" name="stateTax" value="{{store.stateTax}}">
+                </div>
+                <div class="form-group">
+                    <label for="county">CountyTax</label>
+                    <input type="text" id="county"class="form-control" name="countyTax" value="{{store.countyTax}}">
+                </div>
+                <div class="form-group">
+                    <label for="city">CityTax</label>
+                    <input type="text" id="city" class="form-control" name="cityTax" value="{{store.cityTax}}">
+                </div>
+                <div class="form-group">
+                    <label for="district">DistrictTax</label>
+                    <input type="text" id="district" class="form-control" name="districtTax" value="{{store.districtTax}}">
+                </div>
+                <button class="btn btn-success" type="submit">Submit</button>
+            </form>
+        </div>
+        
+    </div>
+
+{{>partials/footer}}

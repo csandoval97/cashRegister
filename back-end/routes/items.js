@@ -10,9 +10,16 @@ router.get('/', (req, res)=>{
 })
 
 router.post('/additem',async (req,res,next)=>{
-    var {barcode,barname,category} = req.body
+    var {barcode,barcodeRe,barname,category} = req.body
     var err = null
-    // console.log(req.body)
+    if(barcode == '' || barname == '' || category == ''){
+        res.render('items',{err:'field is empty'})
+        return;
+    }
+    if(barcode != barcodeRe){
+        res.render('items',{err:'barcode do not match'})
+        return;
+    }
 
     var item = await Item.findOne({barcode},(err,itm)=>{
         return itm

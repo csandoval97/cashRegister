@@ -1,6 +1,6 @@
 {{>partials/header}}
 <div class="row" >
-    <div class="col">
+    <div class="col-4">
         <div class="row">
             <form action="/addbar" method="POST">
                 <div class="form-group">
@@ -9,54 +9,122 @@
                 </div>
             </form>
         </div>
-        <div class="row">
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quia enim sed, deleniti corporis cupiditate molestias a earum magnam? Nam unde ipsa aperiam optio id beatae qui magni odio, mollitia quod!</p>
-        </div>
     </div>
     <div class="col">
-        <!-- <div style="height:75%;line-height:3em;overflow:auto;" id="messages"> -->
+        <p>{{store.manager}}</p>
+        <p>{{store.storeName}}</p>
+        <p>{{store.phone}}</p>
+        <p>{{store.street}}</p>
         <table class="table" id="receipt">
             <thead>
                 <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">item</th>
-                    <th scope="col">quantity</th>
-                    <th scope="col">price</th>
-                    <th scope="col">remove</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Item Name</th>
+                    <th scope="col">Qnt</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">rm</th>
                 </tr>
             </thead>
             <tbody>
                 {{#items}}
                 <tr>
-                    <td>{{id}}</td>
+                    <td>{{barcode}}</td>
                     <td>{{item}}</td>
-                    <td>{{quantity}}</td>
+                    <td>
+                        <div class="input-group input-group-sm mb-3">
+                            <form name="quantForm" action="/addquant" method="POST" >
+                                <input class="form-control" type="number" name="quantNum" value="{{quantity}}">
+                                <input type="hidden" value="{{barcode}}" name="quantBar">
+                            </form>
+                        </div>
+                    </td>
                     <td>{{price}}</td>
-                    <td><a href="/removebar{{id}}">{{id}}</a></td>
+                    <td><a href="/removebar{{id}}">remove</a></td>
                 </tr>
                 {{/items}}
             </tbody>
         </table>
-
-        <div class="input-group mb-3" style="width: 10rem;">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="addon-wrapping">Total</span>
-            </div>
-            <input type="text" id="total" class="form-control" readonly>
-        </div>
+        
+        <table class="receipt">
+            <tr>
+                <td>Subtotal $</td>
+                <td colspan="2"><input type="text" id="subtotal" class="form-control" value='{{total}}'readonly></td>
+            </tr>
+            <!-- <tr>
+                <td></td>
+                <td>state tax</td>
+                <td><input type="text" class="form-control" value="{{store.stateTax}}" readonly></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>city tax</td>
+                <td><input type="text" class="form-control" value="{{store.cityTax}}" readonly></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>county tax</td>
+                <td><input type="text" class="form-control" value="{{store.countyTax}}" readonly></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>district tax</td>
+                <td><input type="text" class="form-control" value="{{store.districtTax}}" readonly></td>
+            </tr> -->
+            <tr>
+                <td>Tax %</td>
+                <td colspan="2"><input type="text"  id="totaltax" class="form-control" value="{{store.totalTax}}" readonly></td>
+            </tr>
+            <tr>
+                <td>Total $</td>
+                <td colspan="2"><input type="text" class="form-control" id="total" readonly></td>
+            </tr>
+            <tr>
+                <td>Payment $</td>
+                <td colspan="2">
+                    <form action="/addpay" method="POST">
+                        <input type="text" id="payment" class="form-control" name='payment' value='{{payment}}'>
+                    </form>
+                </td>
+            </tr>
+            <tr style="height: 2rem;">
+                
+            </tr>
+            <tr>
+                <td>Change $</td>
+                <td colspan="2"><input type="text" id='change' class="form-control" value="100" readonly></td>
+            </tr>
+        </table>
     </div>
 </div>
+
 <script>
-    var table = document.getElementById("receipt")
-    var totalVal = document.getElementById("total");
-    var total = 0
-    for(var i=1;i<table.rows.length;i++){
-        total += Number(table.rows[1].cells[3].innerHTML)
+    var subtotal = Number(document.getElementById('subtotal').value)
+    var tax = Number(document.getElementById('totaltax').value)/100 + 1
+    var payment = Number(document.getElementById('payment').value)
+
+    var changeElem = document.getElementById('change')
+    var total = (tax*subtotal).toFixed(2)
+    var change = (payment - total).toFixed(2)
+
+    console.log('payment',payment)
+    console.log('total',total)
+    console.log('change',change)
+
+    document.getElementById('total').value = total
+
+    if(change < 0 ){
+        changeElem.style='color:red'
     }
-    totalVal.value = total
-    // setTimeout(function(){ x.value = "2 seconds" }, 2000);
-    // setTimeout(function(){ x.value = "4 seconds" }, 4000);
-    // setTimeout(function(){ x.value = "6 seconds" }, 6000);
+    else if(change > 0){
+        changeElem.style='color:green'
+    }
+    else{
+        changeElem.style='color:black'
+    }
+
+    changeElem.value = change
+
 </script>
+
 {{>partials/footer}}
 
