@@ -6,7 +6,7 @@ var logger = require('morgan');
 var mustacheExpress = require('mustache-express')
 var mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost:27017/cashapp',{
+mongoose.connect('mongodb://mongo:27017/cashapp',{
   useNewUrlParser: true,
   useUnifiedTopology:true,
   useFindAndModify:false
