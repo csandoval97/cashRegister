@@ -1,5 +1,14 @@
 version: '3.1'
 services:
+    mongo:
+        container_name: mongo
+        image: mongo
+        ports: 
+            - "27017:27017"
+        restart: unless-stopped
+        volumes: 
+            - ${dbdata}:/data/db
+            
     express:
         container_name: cashapp-express
         restart: unless-stopped
@@ -8,15 +17,3 @@ services:
             - "80:3000"
         links:
             - mongo
-    mongo:
-        image: mongo
-        ports: 
-            - "27017:27017"
-        restart: unless-stopped
-        volumes: 
-            - ${dbdata}:/data/db
-
-        
-
-        
-            
