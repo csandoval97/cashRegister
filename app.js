@@ -6,15 +6,13 @@ var logger = require('morgan');
 var mustacheExpress = require('mustache-express')
 var mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/test',{
+mongoose.connect('mongodb://localhost:27017/cashapp',{
   useNewUrlParser: true,
   useUnifiedTopology:true,
   useFindAndModify:false
 })
-.then(
-  ()=> console.log("db ready to use"),
-  err => console.log("err connecting to database")
-)
+.then(()=> console.log("db ready to use"))
+.catch( err => console.log(err))
 
 var indexRouter = require('./routes/index');
 var itemsRouter = require('./routes/items');
@@ -43,6 +41,10 @@ app.use('/items', itemsRouter)
 app.use('/stocks',stocksRouter)
 app.use('/receipts',receiptsRouter)
 app.use('/store',storeRouter)
+
+app.use('/js',express.static(__dirname+'/node_modules/bootstrap/dist/js'))
+app.use('/js',express.static(__dirname+'/node_modules/jquery/dist/'))
+app.use('/css',express.static(__dirname+'/node_modules/bootstrap/dist/css'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

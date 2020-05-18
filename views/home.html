@@ -1,6 +1,6 @@
 {{>partials/header}}
 <div class="row" >
-    <div class="col-4">
+    <div class="col-4 d-print-none">
         <div class="row">
             <form action="/addbar" method="POST">
                 <div class="form-group">
@@ -22,7 +22,7 @@
                     <th scope="col">Item Name</th>
                     <th scope="col">Qnt</th>
                     <th scope="col">Price</th>
-                    <th scope="col">rm</th>
+                    <th scope="col" class="d-print-none" >rm</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,7 +39,7 @@
                         </div>
                     </td>
                     <td>{{price}}</td>
-                    <td><a href="/removebar{{id}}">remove</a></td>
+                    <td class="d-print-none" ><a href="/removebar{{id}}">remove</a></td>
                 </tr>
                 {{/items}}
             </tbody>
