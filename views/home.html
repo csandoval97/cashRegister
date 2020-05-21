@@ -1,5 +1,5 @@
 {{>partials/header}}
-<div class="row" >
+<div class="row d-print-none" >
     <div class="col-4 d-print-none">
         <div class="row">
             <form action="/addbar" method="POST">
@@ -97,12 +97,73 @@
     </div>
 </div>
 
+<div class="receipt d-none d-print-block">
+<!-- <div class="receipt"> -->
+    <p>{{store.storeName}}</p>
+    <p>{{store.manager}}</p>
+    <p>{{store.phone}}</p>
+    <p>{{store.street}}</p>
+    <table class="table-sm" id="receipt">
+        <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Qnt</th>
+                <th scope="col">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#items}}
+            <tr>
+                <td>{{item}}</td>
+                <td>{{quantity}}</td>
+                <td>{{price}}</td>
+            </tr>
+            <tr>
+                <td>{{barcode}}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {{/items}}
+        </tbody>
+    </table>
+    <table>
+        <tbody>
+            <tr>
+                <td style="width: 5rem;"></td>
+                <td>Sub</td>
+                <td>${{total}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Tax:</td>
+                <td>%{{store.totalTax}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Total</td>
+                <td id="reTotal">$</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Tend</td>
+                <td>${{payment}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>Change</td>
+                <td id='reChange'>$</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 <script>
     var subtotal = Number(document.getElementById('subtotal').value)
     var tax = Number(document.getElementById('totaltax').value)/100 + 1
     var payment = Number(document.getElementById('payment').value)
 
     var changeElem = document.getElementById('change')
+
     var total = (tax*subtotal).toFixed(2)
     var change = (payment - total).toFixed(2)
 
@@ -111,6 +172,7 @@
     console.log('change',change)
 
     document.getElementById('total').value = total
+    document.getElementById('reTotal').textContent = `$${total}`
 
     if(change < 0 ){
         changeElem.style='color:red'
@@ -123,6 +185,7 @@
     }
 
     changeElem.value = change
+    document.getElementById('reChange').textContent = `$${change}`
 
 </script>
 

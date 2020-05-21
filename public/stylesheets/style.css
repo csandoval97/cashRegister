@@ -20,3 +20,13 @@ a {
   width: 34%;
   height: 50%;
 }
+
+div.receipt{
+  width: 15rem;
+  font-weight: 800;
+}
+
+div.receipt > p{
+  text-align: center;
+  font-size: larger;
+}
