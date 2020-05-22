@@ -103,8 +103,20 @@ router.get('/getitem/:id',async(req,res)=>{
     return;
 })
 
-router.post('/edititem',async(re,res)=>{
+router.post('/edititem',upload.single('image'),async(req,res)=>{
+    if(req.file != undefined){
+        console.log(req.file.filename)
+        var image = req.file.filename
+        await Item.findOneAndUpdate({'barcode':req.body.barcode},{$set:{'barname':req.body.barname,'category':req.body.category,image} },(err)=>{
+        })
+    }
+    else{
+        await Item.findOneAndUpdate({'barcode':req.body.barcode},{$set:{'barname':req.body.barname,'category':req.body.category} },(err)=>{
+        })
+    }
     
+    res.render('items',{items})
+    return;
 })
 
 module.exports = router;
