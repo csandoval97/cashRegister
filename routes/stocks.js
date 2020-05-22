@@ -115,12 +115,14 @@ router.post('/finditem',async (req,res,next)=>{
         var temp = {barcode:elems.barcode, 
                     barname:elems.barname,
                     category:elems.category,
+                    image:elems.image,
                     quantity:stock[i].quantity,
                     purDate:moment(stock[i].purDate).format().toString().slice(0,10), 
                     expDate:moment(stock[i].expDate).format().toString().slice(0,10),
                     creDate:stock[i].creDate,
                     purPrice:stock[i].purPrice, 
-                    retPrice:stock[i].retPrice}
+                    retPrice:stock[i].retPrice
+                  }
         itemList.push(temp)
       }         
     }
