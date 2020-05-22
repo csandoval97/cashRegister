@@ -3,8 +3,8 @@ services:
     mongo:
         container_name: cashapp-mongo
         image: mongo
-        ports: 
-            - "27017:27017"
+        #ports: 
+        #    - "27017:27017"
         restart: unless-stopped
         volumes: 
             - ${dbdata}:/data/db
@@ -12,8 +12,10 @@ services:
     express:
         container_name: cashapp-express
         restart: unless-stopped
+        volumes: 
+            - ${dbimages}:/usr/src/app/public/images
         build: ./
         ports: 
             - "3000:3000"
         links:
-            - mongo
+            - localhost

@@ -54,9 +54,13 @@ router.get('/additem',async(req,res,next)=>{
   //else
     //create new stock with todays date
   //console.log(req.query)
-  var item = await Items.findOne({'barcode':req.query.bc},(err,item)=>{
-    return item;
-  }).catch(err=>console.log("error in findByID"))
+  try{
+    var item = await Items.findOne({'barcode':req.query.bc},(err,item)=>{
+      return item;} )
+  }
+  catch{
+    var item = ''
+  }
 
   if(req.query.bc != '' && req.query.cd == '' ){
     console.log("bc!=null,cd==null")
@@ -87,10 +91,17 @@ router.post('/finditem',async (req,res,next)=>{
   //finds items with barcode, then attaches stocks to it
   if(req.body.search == 'barcode'){
     barcode = req.body.barcode;
+
     var elems = await Items.findOne({barcode},(err,elm)=>{
-      return elm;
-    })
-    //console.log(elems)
+      return elm})
+    .catch(err => console.log(err) )
+
+    //could not find item in the database
+    if(elems == null){
+      res.render('stocks',{currDate,nextMonth,itemList,barcode,err:'could not find item'})
+      return;
+    }
+    
     var stock = await Stocks.find({barcode:req.body.barcode},(err,stc)=>{
       return stc
     })
@@ -121,7 +132,7 @@ router.post('/finditem',async (req,res,next)=>{
 
   }
 
-  //console.log(itemList)
+  console.log(itemList)
   res.render('stocks',{currDate,nextMonth,itemList,barcode})
 })
 
