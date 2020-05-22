@@ -32,7 +32,7 @@ router.post('/addstock',(req,res,next)=>{
   purDate = Date.parse(purDate)
   expDate = Date.parse(expDate)
   var stock = new Stocks({barcode,quantity,purDate,expDate,creDate,purPrice,retPrice})
-  console.log('form',req.body )
+  // console.log('form',req.body )
 
   Items.findOneAndUpdate({barcode},{creDate},{new:true,upsert:true},(err, itm)=>{
     console.log('itm',itm)

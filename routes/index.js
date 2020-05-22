@@ -1,9 +1,12 @@
 var express = require('express');
+var moment = require('moment')
 var router = express.Router();
 var Items = require('../models/items')
 var Stocks = require('../models/stocks')
 var Stores = require('../models/stores')
 
+var date = ()=>moment().format('MMMM DD YYYY, hh:mm:ss').toString()
+//console.log(date() )
 var items = []
 var store = {}
 var total = 0
@@ -25,13 +28,16 @@ function getTotal(){
 /* GET home page. */
 router.get('/', async (req, res)=>{
   var err = ''
+  //dat = moment().format('MMMM DD YYYY, hh:mm:ss').toString()
+  //console.log(date())
+
   store = await Stores.findOne({'id':1},(error,str)=>{
     console.log(str)
   })
   .catch(err=>err=err)
   items = []
   total=0
-  res.render('home', {items,total,payment,store,err});
+  res.render('home', {items,total,payment,store,date:date(),err});
 });
 
 
@@ -44,7 +50,7 @@ router.post('/addbar',async (req,res,next)=>{
       items[i].quantity ++;
       total = getTotal()
 
-      res.render('home', {items,total,payment,store});
+      res.render('home', {items,total,payment,store,date:date()});
       return;
     }
   }
@@ -56,9 +62,9 @@ router.post('/addbar',async (req,res,next)=>{
 
   if(err != '' || itemQuery == null){
     if(err!=null)
-      res.render('home', {items,total,store,err:err})
+      res.render('home', {items,total,store,date:date(),err:err})
     else
-      res.render('home', {items,total,store,err:"item db error"})
+      res.render('home', {items,total,store,date:date(),err:"item db error"})
     return;
   }
   
@@ -69,9 +75,9 @@ router.post('/addbar',async (req,res,next)=>{
 
   if(err != '' || stockQuery == null){
     if(err!=null)
-      res.render('home', {items,total,store,err:"error with stockdb"})
+      res.render('home', {items,total,store,date:date(),err:"error with stockdb"})
     else
-      res.render('home', {items,total,store,err:"item does not exist im stock"})
+      res.render('home', {items,total,store,date:date(),err:"item does not exist im stock"})
     return;
   }
   //console.log(itemQuery)
@@ -82,7 +88,7 @@ router.post('/addbar',async (req,res,next)=>{
   //counter++;
 
   total = getTotal()
-  res.render('home', {items,total,payment,store});
+  res.render('home', {items,total,payment,store,date:date()});
 })
 
 router.get('/removebar:id', (req,res, next)=>{
@@ -101,7 +107,7 @@ router.get('/removebar:id', (req,res, next)=>{
   items = temps
   
   total = getTotal()
-  res.render('home', {items,total,store});
+  res.render('home', {items,total,store,date:date()});
 })
 
 router.post('/addquant',(req,res)=>{
@@ -112,13 +118,13 @@ router.post('/addquant',(req,res)=>{
   }
 
   total = getTotal()
-  res.render('home', {items,total,store,payment,store});
+  res.render('home', {items,total,store,payment,store,date:date()});
 })
 
 router.post('/addpay',(req,res)=>{
   console.log(req.body)
   payment = req.body.payment
-  res.render('home', {items,total,payment,store});
+  res.render('home', {items,total,payment,store,date:date()});
 })
 
 module.exports = router;

@@ -21,6 +21,8 @@ router.get('/', (req, res)=>{
 
 router.post('/additem',upload.single('image'),async (req,res,next)=>{
     var {barcode,barcodeRe,barname,category} = req.body
+    barname = barname.toLowerCase()
+    category = category.toLowerCase()
     var image ='';
     var err = null
     
