@@ -3,13 +3,25 @@ import {Tabs, TabList, Tab, TabPanel} from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import './Home.css';
 import BarcodeScan from '../components/BarcodeScan'
-
+import BarcodeItem from '../components/BarcodeItem'
 class Home extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            value:null,
+            msg:{},
+            itm:{},
+            err:'',
         }
+        this.upBarcode = React.createRef()
+    }
+
+    callbackFunction = event =>{
+        // console.log(event)
+        this.setState({
+            itm:event
+        })
+        this.upBarcode.current.updateBarcode()
+        //console.log(this.state.itm)
     }
 
     render(){
@@ -23,15 +35,15 @@ class Home extends React.Component {
                         </TabList>
                     
                         <TabPanel>
-                            <BarcodeScan/>
+                            <BarcodeScan parentCallback = {this.callbackFunction}/>
                         </TabPanel>
                         <TabPanel>
-                            <p>You are awesome</p>
+                            need to implemet table
                         </TabPanel>
                     </Tabs>
                 </div>
                 <div class="col-8">
-                    <h1>Hello You</h1>
+                    <BarcodeItem item={this.state.itm} ref={this.upBarcode}/>
                 </div>
             </div>
         )

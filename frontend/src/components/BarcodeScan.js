@@ -1,49 +1,42 @@
 import React from 'react';
+// import { response } from 'express';
 
-// function BarcodeScan(){
-//     return(
-//         <form>
-//             <label>barcode</label>
-//             <input></input>
-//         </form>
-//     )
-// }
+class BarcodeScan extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      barcode:'hello',
+    }
+  }
 
-// export default BarcodeScan;
-const AddComponent = ({onAdd}) => {
+  handleChange= event =>{
+    this.setState({
+      barcode: event.target.value
+    })
+  }
+
+  handleSubmit= event =>{
+    fetch('http://localhost:3000/api/addbar',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({barcode:this.state.barcode}) })
+    .then(response => response.json() )
+    .then(data => this.props.parentCallback(data))
+    .catch(err => console.log(err))
+    
+    event.preventDefault();
+  }
+  
+  render() {
     return (
-      <div>
-        <button onClick={() => {onAdd("item")}}>Add</button>
-      </div>
-    );
-}
-   
-   class BarcodeScan extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        myObjects: []
-      }
-    }
-   
-    handleAdd = (newObject) => {
-        this.setState((prevState) => (
-          Object.assign(
-            {}, 
-            this.state, 
-            { myObjects: [...prevState.myObjects, newObject] }
-          )
-        ));
-      }
-   
-    render() {
-      return (
-        <div>
-          <AddComponent onAdd={this.handleAdd} />
-          {this.state.myObjects}
+      <form onSubmit={this.handleSubmit}>
+        <div class="form-group">
+          <label for="barcode">Barcode</label>
+          <input type="text" name="barcode" value={this.state.barcode} onChange={this.handleChange} class="form-control" id="barcode"/>
         </div>
-      )
-    }
-   }
+      </form>
+    )
+  }
+}
 
-   export default BarcodeScan
+export default BarcodeScan
