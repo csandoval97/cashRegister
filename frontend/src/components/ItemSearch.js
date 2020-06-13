@@ -19,6 +19,7 @@ class ItemSearch extends React.Component{
     }
 
     findItem = event =>{
+        event.preventDefault();
         var prevState = this.state
 
         if(this.state.search !== '' && this.state.value !== ''){
@@ -28,20 +29,29 @@ class ItemSearch extends React.Component{
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({'search':this.state.search, 'value':this.state.value}) })
             .then(response => response.json() )
-            .then(data => this.props.parentCallback(data))
+            .then(data => {
+                console.log(data)
+                if(data.err)
+                    prevState.err = data.err
+                else
+                    prevState.err = []
+                if(data.msg)
+                    this.props.parentCallback(data)
+                this.setState(prevState) })
             .catch(err => console.log(err) )
         }
         else{
             prevState.err='search cannot be empty'
+            this.setState(prevState)
         }
-        this.setState(prevState)
-        event.preventDefault();
     }
 
     render(){
         return(
             <form onSubmit={this.findItem}>
-                {this.state.err}
+                {this.state.err.map(e =>{
+                    return <p style={{color:'red'}}>{e}</p>
+                })}
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                     <select class="custom-select" name="search" value={this.state.search} onChange={this.handleChange}>

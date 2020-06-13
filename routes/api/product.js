@@ -149,7 +149,7 @@ router.post('/find',async(req,res)=>{
         obj.barcode = item[i].barcode
         obj.barname = item[i].barname
         obj.category = item[i].category
-        obj.image = item[i].image
+        obj.image = `http://localhost:3000/images/${item[i].image}`
         if(product.length <= 0){
             list.push(obj)
         }

@@ -108,6 +108,7 @@ router.post('/find',async(req,res)=>{
 
     // console.log('body',req.body)
     var items;
+    var err=[]
 
     if(req.body.search == 'barcode'){
         try{
@@ -115,7 +116,8 @@ router.post('/find',async(req,res)=>{
             // console.log(items)
             if(items === null){
                 console.log('empty')
-                res.send({'err':'item does not exist'})
+                err.push('item does not exist')
+                res.send({err})
                 return;
             }
             else{
@@ -128,7 +130,8 @@ router.post('/find',async(req,res)=>{
             }
         }
         catch(err){
-            res.send({err:"item could not be found"})
+            err.push("Could not connect to server")
+            res.send({err})
             return;
         }
     }
@@ -137,7 +140,8 @@ router.post('/find',async(req,res)=>{
             items = await Item.find({[req.body.search]:req.body.value})
         }
         catch(err){
-            res.send({err:"item could not be found"})
+            err.push("Could not connect to server")
+            res.send({err})
             return;
         }
 
