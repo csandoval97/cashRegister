@@ -13,7 +13,7 @@ router.post('/addbar',async(req,res)=>{
 
     try{
         itemQuery = await Items.findOne({barcode:req.body.barcode},(err,itm)=>{
-            return err
+            return itm
         })
     }
     catch(e){
@@ -27,14 +27,13 @@ router.post('/addbar',async(req,res)=>{
         })
     }
     catch(e){
-        res.send({'err':'could not connect to dbstock'})
+        res.send({'err':'could not find item'})
         return;
     }
 
-    
     item = {barcode:itemQuery.barcode, barname:itemQuery.barname ,price:stockQuery.retPrice}
     // console.log(itemQuery, stockQuery)
-    res.send(item)
+    res.send({'item':item})
 })
 
 module.exports = router

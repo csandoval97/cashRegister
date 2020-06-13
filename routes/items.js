@@ -106,6 +106,8 @@ router.get('/getitem/:id',async(req,res)=>{
 })
 
 router.post('/edititem',upload.single('image'),async(req,res)=>{
+    // console.log('data'+JSON.stringify(req.body))
+
     if(req.file != undefined){
         console.log(req.file.filename)
         var image = req.file.filename

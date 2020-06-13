@@ -22,11 +22,12 @@ var receiptsRouter = require('./routes/receipts')
 var storeRouter = require('./routes/store')
 
 var indexAPI = require('./routes/api/index')
+var storeAPI = require('./routes/api/store')
+var itemAPI = require('./routes/api/items')
+var productAPI = require('./routes/api/product')
 
 
 var app = express();
-
-
 // view engine setup
 app.engine('html',mustacheExpress())
 app.set('view engine', 'html')
@@ -46,6 +47,10 @@ app.use('/stocks',stocksRouter)
 app.use('/receipts',receiptsRouter)
 app.use('/store',storeRouter)
 app.use('/api', indexAPI)
+app.use('/api/store',storeAPI)
+app.use('/api/item',itemAPI)
+app.use('/api/product',productAPI)
+
 
 app.use('/js',express.static(__dirname+'/node_modules/bootstrap/dist/js'))
 app.use('/js',express.static(__dirname+'/node_modules/jquery/dist/'))

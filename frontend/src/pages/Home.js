@@ -7,27 +7,29 @@ import BarcodeItem from '../components/BarcodeItem'
 class Home extends React.Component {
     constructor(props) {
         super(props)
+        
         this.state = {
-            msg:{},
             itm:{},
-            err:'',
+            msg:'',
+            err:''
         }
         this.upBarcode = React.createRef()
     }
 
     callbackFunction = event =>{
-        // console.log(event)
         this.setState({
-            itm:event
+            itm:event.item,
+            err:event.err
         })
-        this.upBarcode.current.updateBarcode()
-        //console.log(this.state.itm)
+
+        if(this.state.err == null)
+            this.upBarcode.current.updateBarcode()
     }
 
     render(){
         return(
             <div class="row">
-                <div class="col-4">
+                <div class="col-4 d-print-none">
                     <Tabs>
                         <TabList>
                             <Tab>barcode</Tab>
@@ -35,6 +37,7 @@ class Home extends React.Component {
                         </TabList>
                     
                         <TabPanel>
+                            <h5 style={{color:'red'}} >{this.state.err}</h5>
                             <BarcodeScan parentCallback = {this.callbackFunction}/>
                         </TabPanel>
                         <TabPanel>

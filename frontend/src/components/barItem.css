@@ -1,0 +1,18 @@
+.receipt{
+    
+}
+
+.receipt{
+    width: 15rem;
+    font-weight: 800;
+    padding:0rem;
+}
+  
+.receipt > p{
+    text-align: center;
+    font-size: larger;
+}
+
+.receipt > .item {
+    margin-bottom:10px;
+}
