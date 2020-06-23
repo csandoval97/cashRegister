@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Route, Switch, Link} from 'react-router-dom';
 import Home from './pages/Home'
 import Item from './pages/Item'
 import Product from './pages/Product'
+import Store from './pages/Store'
 
 class App extends React.Component{
   constructor(props){
@@ -47,12 +48,18 @@ class App extends React.Component{
                 <li class="nav-item">
                   <Link to="/product" class="nav-link">Product</Link>
                 </li>
+                <li class="nav-item">
+                  <Link to="/store" class="nav-link">Store</Link>
+                </li>
               </ul>
             </div>
           </nav>
 
           <div class="container-fluid mt-4">
             <Switch>
+                <Route path="/store">
+                  <Store />
+                </Route>
                 <Route path="/item">
                   <Item />
                 </Route>

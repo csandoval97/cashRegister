@@ -4,80 +4,119 @@ var moment = require('moment')
 var Stocks = require('../../models/stocks')
 var Items = require('../../models/items')
 
-var currDate = moment().format().toString().slice(0,10)
-var nextMonth = moment().add(1,"month").format().toString().slice(0,10)
-var itemList = [];
-var barcode = '';
+router.post('/addchange',async(req,res)=>{
+  var err=[]
+  console.log(req.body)
+  var {barcode, creDate,purDate, expDate, purPrice, retPrice} = req.body
 
-//currDate:current date
-//nextMonth: todays date + month
-//itemList: list of items
-//barcode: save barcode throught app
+  if(!barcode){
+    err.push("need valid barcode")
+  }
+  if(!creDate){
+    err.push("need valid creation date")
+  }
+  if(!purDate){
+    err.push("invalid purchase date")
+  }
+  if(!expDate){
+    err.push("invalid experation date")
+  }
+  if(!purPrice){
+    err.push("invalid purchase price")
+  }
+  if(!retPrice){
+    err.push("invalid retail price")
+  }
 
-/* GET users listing. */
-router.post('/', function(req, res) {
-  
-  res.send({'msg':'hello from API'})
-});
+  if(err.length > 0){
+    res.send(err)
+    return
+  }
+  purDate = Date.parse(purDate)
+  expDate = Date.parse(expDate)
 
-router.post('/addstock',(req,res,next)=>{
+  try{
+    // console.log('creDate',creDate)
+    // console.log('purDate',Date.parse(purDate))
+    // await Stocks.findOne({barcode,creDate},(err,stk)=>{
+    //   console.log("stk",stk)
+    // })
+    await Stocks.findOneAndUpdate({barcode,creDate},{purDate, expDate, purPrice, retPrice},{new:true},(err,stk)=>{
+      console.log('stock',stk)
+    })
+  }
+  catch(e){
+    err.push('Couldnt connect to server')
+    res.send(err)
+    return
+  }
+
+
+  res.send({msg:'no errors'})
+  return
+})
+
+router.post('/addstock',async(req,res)=>{
+  var err = []
   var creDate = Date.now()
   var {barcode,quantity,purDate,expDate,purPrice,retPrice} = req.body
   purDate = Date.parse(purDate)
   expDate = Date.parse(expDate)
-  var stock = new Stocks({barcode,quantity,purDate,expDate,creDate,purPrice,retPrice})
-  // console.log('form',req.body )
 
-  Items.findOneAndUpdate({barcode},{creDate},{new:true,upsert:true},(err, itm)=>{
-    console.log('itm',itm)
-  })
-  // .catch(err=>console.log('err with /addstock itemsdb'))
+  if(!purDate){
+    err.push('Purchase Date invalid')
+  }
+  if(!expDate){
+    err.push('Experation Date invalid')
+  }
+  if(!barcode ){
+    err.push('Barcode cannot be empty')
+  }
+  if(!quantity){
+    err.push('Quantity cannot be empty')
+  }
+  if(!purPrice){
+    err.push('Purchase Price cannot be empty')
+  }
+  if(!retPrice){
+    err.push('Retail Price cannot be empty')
+  }
   
-  stock.save((err,stc)=>{
-    console.log('stc',stc)
-  })
-  // .catch(err=>console.log('err with /addstock, stockdb'))
+  if(err.length > 0){
+    res.send({'err':err})
+    return
+  }
 
-  //itemList = []
-  res.render('stocks',{})
-})
-
-router.get('/additem',async(req,res,next)=>{
-  // if bc != null and cd != null
-    //add previous stock to data
-  //else
-    //create new stock with todays date
-  //console.log(req.query)
   try{
-    var item = await Items.findOne({'barcode':req.query.bc},(err,item)=>{
-      return item;} )
+    var stock = new Stocks({barcode,quantity,purDate,expDate,creDate,purPrice,retPrice})
   }
-  catch{
-    var item = ''
+  catch(e){
+    err.push('Couldnt connect to server 1')
+    res.send({'err':err})
+    return
   }
 
-  if(req.query.bc != '' && req.query.cd == '' ){
-    console.log("bc!=null,cd==null")
-    res.render('stocks',{currDate,nextMonth,itemList,item})
-    return;
+  try{
+    await Items.findOneAndUpdate({barcode},{creDate})
   }
-  else{
-    var stock = await Stocks.findOne({'barcode':item.barcode,'creDate':req.query.cd},(err, stck)=>{
-      return stck
-    }).catch(err=>console.log("err in /additem/stockfindOne"))
-    console.log('item',typeof(item))
-    
-    item = JSON.parse(JSON.stringify(item))
-    item.quantity =  stock.quantity
-    item.purDate = moment(stock.purDate).format().toString().slice(0,10)
-    item.expDate = moment(stock.expDate).format().toString().slice(0,10)
-    item.purPrice = stock.purPrice
-    item.retPrice = stock.retPrice
-    console.log('post',item,stock)
+  catch(e){
+    err.push('Couldnt connect to server 3')
+    res.send(err)
+    return
+  }
 
-    res.render('stocks',{currDate,nextMonth,itemList,item})
-    return;
+
+  try{
+    await stock.save()
   }
+  catch(e){
+    err.push('Couldnt connect to server 3')
+    res.send(err)
+    return
+  }
+
+  res.send({'msg':'added stock successfully'})
+  return
 })
 
 router.post('/find',async(req,res)=>{
@@ -142,32 +181,45 @@ router.post('/find',async(req,res)=>{
         return;
     }
     var list = []
+
     for(var i=0; i<item.length; i++){
         var product = await Stocks.find({barcode:item[i].barcode})
-        var obj = {}
-
-        obj.barcode = item[i].barcode
-        obj.barname = item[i].barname
-        obj.category = item[i].category
-        obj.image = `http://localhost:3000/images/${item[i].image}`
+        
+        // console.log(item,product)
         if(product.length <= 0){
-            list.push(obj)
+          var purDate = moment().format().toString().slice(0,10)
+          var expDate = moment().add(1,"month").format().toString().slice(0,10)
+          var obj = {}
+          obj.barcode = item[i].barcode
+          obj.barname = item[i].barname
+          obj.category = item[i].category
+          obj.purDate = purDate
+          obj.expDate = expDate
+          obj.purPrice = 0
+          obj.retPrice =  0
+          obj.creDate = null
+          obj.image = `http://localhost:3000/images/${item[i].image}`
+          list.push(obj)
         }
         else{
             for(var j=0; j<product.length; j++){
-                obj.quant = product[j].quantity
-                obj.purDate = product[j].quantity
-                obj.expDate = product[j].expDate
+                var purDate = new Date(product[j].purDate).toISOString().slice(0,10)
+                var expDate = new Date(product[j].expDate).toISOString().slice(0,10)
+                var obj = {}
+                obj.barcode = item[i].barcode
+                obj.barname = item[i].barname
+                obj.category = item[i].category
+                obj.image = `http://localhost:3000/images/${item[i].image}`
+                obj.quantity = product[j].quantity
+                obj.purDate = purDate
+                obj.expDate = expDate
                 obj.creDate = product[j].creDate
                 obj.purPrice = product[j].purPrice
                 obj.retPrice = product[j].retPrice
                 list.push(obj)
             }
-        } 
+        }
     }
-
-    // console.log('final',list)
-    // console.log('final list',list)
     res.send({msg:list})
 })
 

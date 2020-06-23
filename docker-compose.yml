@@ -6,16 +6,29 @@ services:
         #ports: 
         #    - "27017:27017"
         restart: unless-stopped
-        volumes: 
-            - ${dbdata}:/data/db
+        volumes:
+            - ./data/db:/data/db
             
     express:
         container_name: cashapp-express
         restart: unless-stopped
-        volumes: 
-            - ${dbimages}:/usr/src/app/public/images
+        volumes:
+            - ./data/db:/usr/src/app/public/images
         build: ./
         ports: 
-            - "80:3000"
+            - "3000:3000"
         links:
             - mongo
+
+    react:
+        container_name: cashapp-react
+        restart: unless-stopped
+        build: ./frontend
+        # volumes:
+        #     - '.:/app'
+        #     - '/app/node_modules'
+        ports:
+            - "9000:80"
+        links:
+            - express
+

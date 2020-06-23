@@ -9,14 +9,21 @@ class Products extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            product:[]
+            product:[],
+            prodAdd:[]
         }
     }
 
     callbackFunction = product => {
-        console.log(product)
         this.setState({
             product:product
+        })
+    }
+
+    addCallback = product => {
+        console.log(product)
+        this.setState({
+            prodAdd:product
         })
     }
 
@@ -34,13 +41,13 @@ class Products extends React.Component{
                             <ProductSearch parentCallback={this.callbackFunction} />
                         </TabPanel>
                         <TabPanel>
-                            <ProductForm />
+                            <ProductForm prodAdd={this.state.prodAdd} />
                         </TabPanel>
                     </Tabs>
                     
                 </div>
                 <div class="col-8">
-                    <ProductList product={this.state.product}/>
+                    <ProductList product={this.state.product} parentCallback={this.addCallback}/>
                 </div>
             </div>
         )
